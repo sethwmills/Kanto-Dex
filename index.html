@@ -10,8 +10,8 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Kanto Dex" />
-<meta name="theme-color" content="#211f1a" />
-<link rel="manifest" href='data:application/manifest+json,{"name":"Kanto Dex Tracker","short_name":"Kanto Dex","display":"standalone","background_color":"%23efece2","theme_color":"%23211f1a","start_url":"."}' />
+<meta name="theme-color" content="#d3242c" />
+<link rel="manifest" href='data:application/manifest+json,{"name":"Kanto Dex Tracker","short_name":"Kanto Dex","display":"standalone","background_color":"%23efece2","theme_color":"%23d3242c","start_url":"."}' />
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap');
@@ -22,45 +22,80 @@ html,body{ margin:0; padding:0; background:#efece2; }
 .kd-root{
   --ink:#211f1a; --dim:#6f6a5c; --paper:#efece2; --card:#fbfaf5;
   --line:#dcd7c8; --red:#c1272d; --have:#1f8a5b; --want:#b7791f;
+  /* Pokédex device */
+  --shell:#d3242c; --shell-hi:#e85a60; --shell-lo:#9e1a20;
+  --bezel:#e7e4d8; --bezel-lo:#c3bfae;
+  --lcd:#1b201a; --lcd-fg:#8be0b6;
+  --lens:#39b7ff; --lens-hi:#bfe9ff; --lens-deep:#1c6bab;
+  --l-red:#ff5f56; --l-yellow:#ffd23f; --l-green:#4fd07f;
   max-width:560px; margin:0 auto; background:var(--paper); color:var(--ink);
   font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; min-height:100vh;
 }
-.kd-head{ position:sticky; top:0; z-index:5; background:var(--paper);
-  padding:max(18px, env(safe-area-inset-top)) 16px 12px; border-bottom:1px solid var(--line); }
-.kd-brand{ display:flex; align-items:center; gap:12px; }
-.kd-lens{ width:26px; height:26px; border-radius:50%; flex:0 0 auto;
-  background:radial-gradient(circle at 32% 30%, #7ec8ff 0 22%, var(--red) 60% 100%);
-  box-shadow:0 0 0 3px #fff, 0 0 0 4px var(--ink); }
-.kd-kicker{ font-family:'Oswald',sans-serif; font-weight:600; text-transform:uppercase;
-  letter-spacing:.18em; font-size:10px; color:var(--red); }
-.kd-title{ font-family:'Oswald',sans-serif; font-weight:700; font-size:20px;
-  line-height:1.05; margin:2px 0 0; letter-spacing:.01em; }
 
-.kd-screen{ margin-top:14px; background:var(--ink); border-radius:10px; padding:12px 14px; color:#f2efe6; }
+/* ---------- Header: the Pokédex face ---------- */
+.kd-head{ position:sticky; top:0; z-index:5;
+  background-image:linear-gradient(180deg, var(--shell-hi) 0%, var(--shell) 20%, var(--shell) 82%, var(--shell-lo) 100%);
+  padding:max(16px, env(safe-area-inset-top)) 14px 14px;
+  border-bottom:4px solid var(--shell-lo);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.20), 0 3px 10px rgba(0,0,0,.20); }
+
+.kd-face{ display:flex; align-items:center; gap:13px; }
+.kd-lens{ width:46px; height:46px; border-radius:50%; flex:0 0 auto; position:relative;
+  background:radial-gradient(circle at 34% 30%, var(--lens-hi) 0 11%, var(--lens) 32%, var(--lens-deep) 76%, #0f4d7d 100%);
+  box-shadow:0 0 0 4px #f2efe6, 0 0 0 6px var(--shell-lo), inset -3px -3px 6px rgba(0,0,0,.35); }
+.kd-lens::after{ content:""; position:absolute; top:8px; left:11px; width:12px; height:9px;
+  border-radius:50%; background:rgba(255,255,255,.85); transform:rotate(-18deg); }
+.kd-facemain{ min-width:0; }
+.kd-lights{ display:flex; gap:6px; margin-bottom:5px; }
+.kd-lights i{ width:9px; height:9px; border-radius:50%; display:block;
+  box-shadow:inset 0 -1px 1px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.18), 0 0 5px rgba(255,255,255,.30); }
+.kd-lights .r{ background:var(--l-red); }
+.kd-lights .y{ background:var(--l-yellow); }
+.kd-lights .g{ background:var(--l-green); }
+.kd-kicker{ font-family:'Oswald',sans-serif; font-weight:700; text-transform:uppercase;
+  letter-spacing:.18em; font-size:10px; color:#ffe4e5; }
+.kd-title{ font-family:'Oswald',sans-serif; font-weight:700; font-size:19px; line-height:1.05;
+  margin:2px 0 0; letter-spacing:.01em; color:#fff; text-shadow:0 1px 0 var(--shell-lo); }
+
+/* ---------- Screen ---------- */
+.kd-screenwrap{ margin-top:13px; background:var(--bezel); border-radius:12px; padding:9px 10px 8px;
+  border:1px solid var(--bezel-lo);
+  box-shadow:inset 0 1px 0 #fff, inset 0 -2px 0 var(--bezel-lo), 0 1px 3px rgba(0,0,0,.28); }
+.kd-screen{ background:var(--lcd); border-radius:7px; padding:11px 13px; color:#f2efe6;
+  box-shadow:inset 0 0 0 2px #11140f, inset 0 2px 10px rgba(0,0,0,.6); }
 .kd-readout{ display:flex; align-items:baseline; gap:6px; font-family:'Space Mono',monospace; }
-.kd-count{ font-size:30px; font-weight:700; color:#8be0b6; letter-spacing:.02em; }
+.kd-count{ font-size:30px; font-weight:700; color:var(--lcd-fg); letter-spacing:.02em; }
 .kd-slash{ font-size:18px; color:#6f6a5c; }
 .kd-total{ font-size:18px; color:#b9b3a4; }
 .kd-pct{ margin-left:auto; font-size:14px; font-weight:700; color:#f2efe6; }
 .kd-bar{ margin-top:9px; height:8px; border-radius:5px; background:#3a372f; overflow:hidden; }
-.kd-fill{ height:100%; background:linear-gradient(90deg,#1f8a5b,#8be0b6); border-radius:5px; transition:width .35s ease; }
+.kd-fill{ height:100%; background:linear-gradient(90deg,#1f8a5b,var(--lcd-fg)); border-radius:5px; transition:width .35s ease; }
 .kd-sub{ margin-top:7px; font-family:'Space Mono',monospace; font-size:11px; color:#b9b3a4; }
+.kd-screendeco{ display:flex; align-items:center; gap:8px; margin-top:8px; padding:0 3px; }
+.kd-dot{ width:9px; height:9px; border-radius:50%; }
+.kd-dot.r{ background:#e24b3f; box-shadow:0 0 5px rgba(226,75,63,.6); }
+.kd-dot.g{ background:#3fb56a; }
+.kd-grille{ margin-left:auto; display:flex; flex-direction:column; gap:2px; width:52px; }
+.kd-grille i{ height:2px; background:var(--bezel-lo); border-radius:2px; display:block; }
 
-.kd-search{ width:100%; margin-top:12px; padding:10px 12px; border:1px solid var(--line);
-  border-radius:8px; background:var(--card); color:var(--ink); font-size:16px; box-sizing:border-box; }
-.kd-search:focus{ outline:2px solid var(--red); outline-offset:1px; }
-
-.kd-tabs{ display:flex; gap:6px; margin-top:12px; }
-.kd-tab{ flex:1; display:flex; flex-direction:column; align-items:center; gap:1px;
-  padding:7px 4px; border:1px solid var(--line); border-radius:8px; background:var(--card);
+/* ---------- Controls ---------- */
+.kd-controls{ margin-top:12px; }
+.kd-search{ width:100%; padding:10px 12px; border:0; border-radius:8px; box-sizing:border-box;
+  background:var(--card); color:var(--ink); font-size:16px;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.22); }
+.kd-search::placeholder{ color:#9a9484; }
+.kd-search:focus{ outline:2px solid #fff; outline-offset:1px; }
+.kd-tabs{ display:flex; gap:6px; margin-top:10px; }
+.kd-tab{ flex:1; display:flex; flex-direction:column; align-items:center; gap:1px; padding:7px 4px;
+  border:1px solid var(--shell-lo); border-radius:8px; background:var(--card);
   font-family:'Oswald',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.08em;
-  font-size:11px; color:var(--dim); cursor:pointer; }
+  font-size:11px; color:var(--dim); cursor:pointer; box-shadow:0 1px 0 rgba(0,0,0,.15); }
 .kd-tab.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
 .kd-tabnum{ font-family:'Space Mono',monospace; font-size:13px; font-weight:700; letter-spacing:0; }
 
+/* ---------- Notices / export ---------- */
 .kd-warn{ margin:10px 12px 0; padding:9px 12px; border:1px solid var(--want); border-radius:8px;
   background:#fbf3e2; color:#8a5a12; font-size:12px; line-height:1.35; }
-
 .kd-export{ padding:10px 12px 0; }
 .kd-exportbtn{ font-family:'Oswald',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.1em;
   font-size:10px; color:var(--dim); background:var(--card); border:1px solid var(--line);
@@ -74,18 +109,24 @@ html,body{ margin:0; padding:0; background:#efece2; }
   letter-spacing:.08em; font-size:11px; color:#fff; background:var(--ink); border:0;
   border-radius:8px; padding:8px 14px; cursor:pointer; }
 
+/* ---------- List ---------- */
 .kd-body{ padding:6px 12px 20px; }
 .kd-sec{ font-family:'Oswald',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.16em;
   font-size:11px; color:var(--dim); margin:16px 4px 8px; }
 .kd-list{ list-style:none; margin:0; padding:0; }
 .kd-row{ border-bottom:1px solid var(--line); }
-.kd-rowbtn{ width:100%; display:flex; align-items:center; gap:12px; padding:11px 8px;
+.kd-rowbtn{ width:100%; display:flex; align-items:center; gap:11px; padding:9px 8px;
   background:none; border:0; text-align:left; cursor:pointer; color:var(--ink); }
 .kd-rowbtn:focus-visible{ outline:2px solid var(--red); outline-offset:-2px; border-radius:6px; }
 .kd-check{ width:22px; height:22px; flex:0 0 auto; border:2px solid var(--line); border-radius:6px;
   display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:#fff; background:var(--card); }
 .kd-check.on{ background:var(--have); border-color:var(--have); }
-.kd-dex{ font-family:'Space Mono',monospace; font-size:12px; color:var(--dim); width:36px; flex:0 0 auto; }
+.kd-slot{ width:44px; height:44px; flex:0 0 auto; border-radius:9px; overflow:hidden;
+  border:1px solid var(--line); box-shadow:inset 0 1px 2px rgba(0,0,0,.08);
+  background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%23d9d3c4' stroke-width='2'/%3E%3Cline x1='3' y1='12' x2='21' y2='12' stroke='%23d9d3c4' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='3' fill='%23fbfaf5' stroke='%23d9d3c4' stroke-width='2'/%3E%3C/svg%3E") center/24px no-repeat; }
+.kd-sprite{ width:100%; height:100%; object-fit:contain; display:block; }
+.kd-row:not(.have) .kd-sprite{ filter:saturate(.92); }
+.kd-dex{ font-family:'Space Mono',monospace; font-size:12px; color:var(--dim); width:34px; flex:0 0 auto; }
 .kd-name{ font-size:15px; font-weight:500; }
 .kd-row.have .kd-name{ color:var(--dim); }
 .kd-want{ margin-left:auto; font-family:'Oswald',sans-serif; font-size:10px; font-weight:600;
@@ -102,28 +143,37 @@ html,body{ margin:0; padding:0; background:#efece2; }
 <body>
 <div class="kd-root">
   <header class="kd-head">
-    <div class="kd-brand">
+    <div class="kd-face">
       <span class="kd-lens" aria-hidden="true"></span>
-      <div>
+      <div class="kd-facemain">
+        <span class="kd-lights" aria-hidden="true"><i class="r"></i><i class="y"></i><i class="g"></i></span>
         <div class="kd-kicker">Card Completion Log</div>
         <h1 class="kd-title">Kanto Dex 151 + Eeveelutions</h1>
       </div>
     </div>
 
-    <div class="kd-screen">
-      <div class="kd-readout">
-        <span class="kd-count" id="count">000</span>
-        <span class="kd-slash">/</span>
-        <span class="kd-total" id="total">0</span>
-        <span class="kd-pct" id="pct">0%</span>
+    <div class="kd-screenwrap">
+      <div class="kd-screen">
+        <div class="kd-readout">
+          <span class="kd-count" id="count">000</span>
+          <span class="kd-slash">/</span>
+          <span class="kd-total" id="total">0</span>
+          <span class="kd-pct" id="pct">0%</span>
+        </div>
+        <div class="kd-bar"><div class="kd-fill" id="fill" style="width:0%"></div></div>
+        <div class="kd-sub" id="sub"></div>
       </div>
-      <div class="kd-bar"><div class="kd-fill" id="fill" style="width:0%"></div></div>
-      <div class="kd-sub" id="sub"></div>
+      <div class="kd-screendeco" aria-hidden="true">
+        <span class="kd-dot r"></span>
+        <span class="kd-dot g"></span>
+        <span class="kd-grille"><i></i><i></i><i></i><i></i></span>
+      </div>
     </div>
 
-    <input class="kd-search" id="search" placeholder="Search name or number" />
-
-    <div class="kd-tabs" id="tabs"></div>
+    <div class="kd-controls">
+      <input class="kd-search" id="search" placeholder="Search name or number" />
+      <div class="kd-tabs" id="tabs"></div>
+    </div>
   </header>
 
   <div class="kd-warn" id="warn" style="display:none">
@@ -145,6 +195,14 @@ html,body{ margin:0; padding:0; background:#efece2; }
 </div>
 
 <script>
+/* ---------- Sprites ----------
+   Official artwork from the PokéAPI sprite set, keyed to national dex number (p.no).
+   To switch to small pixel sprites instead, change SPRITE_BASE to:
+   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+   Note: Alolan forms use their base species number, so they show the standard artwork. */
+var SPRITE_BASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
+function spriteURL(no){ return SPRITE_BASE + no + ".png"; }
+
 /* ---------- Data ---------- */
 var MAIN = [
   [1,"Bulbasaur"],[2,"Ivysaur"],[3,"Venusaur"],[4,"Charmander"],[5,"Charmeleon"],[6,"Charizard"],
@@ -187,9 +245,12 @@ var TRAINER = [
 ];
 
 var DEFAULT_OWNED = new Set([
-  1,2,4,5,25,26,37,38,45,54,58,59,62,65,73,77,78,79,80,94,107,120,124,127,128,
+  1,2,4,5,10,12,13,14,15,19,21,23,24,25,26,27,28,29,32,35,37,38,39,40,41,42,43,
+  44,45,46,47,48,49,50,52,54,56,57,58,59,61,65,73,77,78,79,80,81,82,86,87,88,92,
+  93,94,96,97,100,102,103,107,109,110,111,112,113,114,115,118,119,120,124,127,128,
   129,130,131,133,134,135,137,142,143,146,147,148,
-  10074,10075,10076,20172,20155
+  197,470,471,700,
+  10074,10075,10076,20155,20172
 ]);
 var WANT = new Set([3,6,7,8,9,55,66,67,68,74,75,76,95,121,136,138,144,145,149,196]);
 
@@ -302,6 +363,7 @@ function rowHTML(p){
   return '<li class="kd-row'+(isOwned?" have":"")+'">'
     + '<button class="kd-rowbtn" data-dex="'+p.dex+'" aria-pressed="'+isOwned+'">'
     + '<span class="kd-check'+(isOwned?" on":"")+'" aria-hidden="true">'+(isOwned?"\u2713":"")+'</span>'
+    + '<span class="kd-slot"><img class="kd-sprite" loading="lazy" alt="" src="'+spriteURL(p.no)+'" onerror="this.style.display=\'none\'"></span>'
     + '<span class="kd-dex">'+String(p.no).padStart(3,"0")+'</span>'
     + '<span class="kd-name">'+esc(p.name)+'</span>'
     + (isWant && !isOwned ? '<span class="kd-want">Wishlist</span>' : '')
@@ -326,12 +388,22 @@ function renderBody(){
 function roundRect(x,x0,y0,w,h,r){ x.beginPath(); x.moveTo(x0+r,y0); x.arcTo(x0+w,y0,x0+w,y0+h,r); x.arcTo(x0+w,y0+h,x0,y0+h,r); x.arcTo(x0,y0+h,x0,y0,r); x.arcTo(x0,y0,x0+w,y0,r); x.closePath(); }
 function makeIcon(){
   try{
+    var P=Math.PI*2;
     var c=document.createElement("canvas"); c.width=180; c.height=180;
     var x=c.getContext("2d");
-    x.fillStyle="#211f1a"; roundRect(x,0,0,180,180,40); x.fill();
-    x.fillStyle="#c1272d"; x.beginPath(); x.arc(90,98,46,0,Math.PI*2); x.fill();
-    x.strokeStyle="#f2efe6"; x.lineWidth=6; x.beginPath(); x.arc(90,98,46,0,Math.PI*2); x.stroke();
-    x.fillStyle="#7ec8ff"; x.beginPath(); x.arc(76,84,16,0,Math.PI*2); x.fill();
+    // red shell
+    x.fillStyle="#d3242c"; roundRect(x,0,0,180,180,40); x.fill();
+    x.fillStyle="rgba(255,255,255,0.14)"; roundRect(x,0,0,180,64,40); x.fill();
+    // lens with rings + glint
+    x.fillStyle="#f2efe6"; x.beginPath(); x.arc(60,62,30,0,P); x.fill();
+    x.fillStyle="#39b7ff"; x.beginPath(); x.arc(60,62,24,0,P); x.fill();
+    x.fillStyle="#bfe9ff"; x.beginPath(); x.arc(52,54,8,0,P); x.fill();
+    // indicator lights
+    var L=[["#ff5f56",112],["#ffd23f",134],["#4fd07f",156]];
+    L.forEach(function(o){ x.fillStyle=o[0]; x.beginPath(); x.arc(o[1],40,8,0,P); x.fill(); });
+    // screen
+    x.fillStyle="#e7e4d8"; roundRect(x,30,98,120,54,12); x.fill();
+    x.fillStyle="#1b201a"; roundRect(x,40,106,100,38,7); x.fill();
     var url=c.toDataURL("image/png");
     var l=document.createElement("link"); l.rel="apple-touch-icon"; l.href=url; document.head.appendChild(l);
     var f=document.createElement("link"); f.rel="icon"; f.href=url; document.head.appendChild(f);
