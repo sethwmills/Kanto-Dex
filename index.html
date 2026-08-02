@@ -243,13 +243,16 @@ var TRAINER = [
   [20172,"Ethan's Pichu",172],
   [20155,"Ethan's Cyndaquil",155]
 ];
+var EXTRAS = [
+  [199,"Slowking"]
+];
 
 var DEFAULT_OWNED = new Set([
   1,2,4,5,10,12,13,14,15,19,21,23,24,25,26,27,28,29,32,35,37,38,39,40,41,42,43,
   44,45,46,47,48,49,50,52,54,56,57,58,59,61,65,73,77,78,79,80,81,82,86,87,88,92,
-  93,94,96,97,100,102,103,107,109,110,111,112,113,114,115,118,119,120,124,127,128,
-  129,130,131,133,134,135,137,142,143,146,147,148,
-  197,470,471,700,
+  93,94,96,97,100,101,102,103,104,107,109,110,111,112,113,114,115,118,119,120,124,
+  127,128,129,130,131,133,134,135,137,142,143,145,146,147,148,196,
+  197,199,470,471,700,
   10074,10075,10076,20155,20172
 ]);
 var WANT = new Set([3,6,7,8,9,55,66,67,68,74,75,76,95,121,136,138,144,145,149,196]);
@@ -259,7 +262,8 @@ var GROUPS = [
   { key:"kanto",   label:"Original 151",       items: mk(MAIN, "kanto") },
   { key:"alolan",  label:"Alolan Forms",       items: mk(ALOLAN, "alolan") },
   { key:"eevee",   label:"Eeveelutions",       items: mk(EEVEE, "eevee") },
-  { key:"trainer", label:"Trainer's Pok\u00e9mon", items: mk(TRAINER, "trainer") }
+  { key:"trainer", label:"Trainer's Pok\u00e9mon", items: mk(TRAINER, "trainer") },
+  { key:"extra",   label:"Extras",             items: mk(EXTRAS, "extra") }
 ];
 var ALL = GROUPS.reduce(function(a,g){ return a.concat(g.items); }, []);
 var TOTAL = ALL.length;
@@ -268,6 +272,8 @@ var STORAGE_KEY = "kantodex_owned_v1";
 var MIGRATION_KEY = "kantodex_migrations_v1";
 var MIGRATION_ID = "alolan_ethan_v1";
 var NEW_OWNED = [10074,10075,10076,20172,20155];
+var MIGRATION_ID_2 = "slowking_owned_v1";
+var NEW_OWNED_2 = [199];
 
 /* ---------- Storage ---------- */
 function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
@@ -296,6 +302,11 @@ function loadOwned(){
   if(migrations.indexOf(MIGRATION_ID) === -1){
     NEW_OWNED.forEach(function(d){ set.add(d); });
     migrations.push(MIGRATION_ID);
+    migrated = true;
+  }
+  if(migrations.indexOf(MIGRATION_ID_2) === -1){
+    NEW_OWNED_2.forEach(function(d){ set.add(d); });
+    migrations.push(MIGRATION_ID_2);
     migrated = true;
   }
   if(firstRun || migrated){ if(!lsSet(STORAGE_KEY, JSON.stringify(Array.from(set)))) storageOk = false; }
